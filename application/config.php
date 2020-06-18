@@ -1,4 +1,5 @@
 <?php
+use \think\Request;
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -8,6 +9,13 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+$basename = Request::instance()->root();
+
+if (pathinfo($basename, PATHINFO_EXTENSION) == 'php') {
+
+    $basename = dirname($basename);
+
+}
 
 return [
     // +----------------------------------------------------------------------
@@ -131,7 +139,10 @@ return [
     ],
 
     // 视图输出字符串内容替换
-    'view_replace_str'       => [],
+    'view_replace_str'       => [
+        '__ROOT__'   => $basename,
+        '__STATIC__'   => $basename . '/static',
+    ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
     'dispatch_error_tmpl'    => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
